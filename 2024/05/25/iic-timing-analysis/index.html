@@ -1,0 +1,711 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="TATAzml">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="转载博客：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;liujinggang&#x2F;p&#x2F;9656358.html 以及 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;xuyan123&#x2F;p&#x2F;14134246.html 我也怕什么时候大神把博客删除了，后面这个链接简单明了，一下就让我看明白了 iic 的基础。 一、IIC 总线协议介绍I2C 总线是由数据线 SDA 和时钟 SCL 构成的串行总线，可发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IIC时序分析">
+<meta property="og:url" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/index.html">
+<meta property="og:site_name" content="TATAzml">
+<meta property="og:description" content="转载博客：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;liujinggang&#x2F;p&#x2F;9656358.html 以及 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;xuyan123&#x2F;p&#x2F;14134246.html 我也怕什么时候大神把博客删除了，后面这个链接简单明了，一下就让我看明白了 iic 的基础。 一、IIC 总线协议介绍I2C 总线是由数据线 SDA 和时钟 SCL 构成的串行总线，可发">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/1.png">
+<meta property="og:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/2.png">
+<meta property="og:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/3.png">
+<meta property="og:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/4.png">
+<meta property="og:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/5.png">
+<meta property="og:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/6.png">
+<meta property="og:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/7.png">
+<meta property="og:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/8.png">
+<meta property="og:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/9.png">
+<meta property="article:published_time" content="2024-05-25T08:43:00.000Z">
+<meta property="article:modified_time" content="2026-10-22T00:09:09.371Z">
+<meta property="article:author" content="TATAzml">
+<meta property="article:tag" content="硬件设计">
+<meta property="article:tag" content="IIC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tatazml.github.io/2024/05/25/iic-timing-analysis/1.png">
+  
+  
+  
+  <title>IIC时序分析 - TATAzml</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tatazml.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"A5t4s3wEwYLsXLvvdXI75GnW-MdYXbMMI","app_key":"CBZIrTPFZpCu4jqTQHjLTiiW","server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TATAzml</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="IIC时序分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-25 16:43" pubdate>
+          2024年5月25日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">IIC时序分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>转载博客：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/liujinggang/p/9656358.html">https://www.cnblogs.com/liujinggang/p/9656358.html</a> 以及 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/xuyan123/p/14134246.html">https://www.cnblogs.com/xuyan123/p/14134246.html</a></p>
+<p>我也怕什么时候大神把博客删除了，后面这个链接简单明了，一下就让我看明白了 iic 的基础。</p>
+<h2 id="一、IIC-总线协议介绍"><a href="#一、IIC-总线协议介绍" class="headerlink" title="一、IIC 总线协议介绍"></a>一、IIC 总线协议介绍</h2><p>I2C 总线是由数据线 SDA 和时钟 SCL 构成的串行总线，可发送和接收数据，并且在硬件上都需要接一个上拉电阻到 VCC。</p>
+<p>各种被控制电路均并联在这条总线上，但就像电话机一样只有拨通各自的号码才能工作，所以每个电路和模块都有唯一的地址，这样，各控制电路虽然挂在同一条总线上，却彼此独立，互不相关。</p>
+<h2 id="二、IIC-的通信状态"><a href="#二、IIC-的通信状态" class="headerlink" title="二、IIC 的通信状态"></a>二、IIC 的通信状态</h2><p>总的来说，IIC 总线在通信的过程中一共有一下几种状态：</p>
+<h3 id="1、空闲状态"><a href="#1、空闲状态" class="headerlink" title="1、空闲状态"></a>1、空闲状态</h3><p>IIC 总线的 SDA 和 SCL 两条信号线同时处于高电平时，规定为总线的空闲状态。此时各个器件的输出级场效应管均处在截止状态，即释放总线，由两条信号线各自的上拉电阻把电平拉高。</p>
+<h3 id="2、起始状态和结束状态"><a href="#2、起始状态和结束状态" class="headerlink" title="2、起始状态和结束状态"></a>2、起始状态和结束状态</h3><p>在时钟线 SCL 保持高电平期间，数据线 SDA 上的电平被拉低(即负跳变)，定义为 I2C 总线总线的起始信号，它标志着一次数据传输的开始。起始信号是由主控器主动建立的，在建立该信号之前 I2C 总线必须处于空闲状态。</p>
+<p>在时钟线 SCL 保持高电平期间，数据线 SDA 被释放，使得 SDA 返回高电平(即正跳变)，称为 I2C 总线的停止信号，它标志着一次数据传输的终止。停止信号也是由主控器主动建立的，建立该信号之后，I2C 总线将返回空闲状态。</p>
+<p>起始信号和结束信号如下图所示</p>
+<p><img src="/2024/05/25/iic-timing-analysis/1.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3、有效的数据位传输"><a href="#3、有效的数据位传输" class="headerlink" title="3、有效的数据位传输"></a>3、有效的数据位传输</h3><p>在 IIC 总线上传送的每一位数据都有一个时钟脉冲相对应(或同步控制)，即在 SCL 串行时钟的配合下，数据在 SDA 上从高位向低位依次串行传送每一位的数据。进行数据传送时，在 SCL 呈现高电平期间，SDA 上的电平必须保持稳定，低电平为数据 0，高电平为数据 1。只有在 SCL 为低电平期间，才允许 SDA 上的电平改变状态。下图是 0xaa 在 IIC 总线上有效传输(有效传输是指第 9 个时钟的高电平期间，从机给主机反馈了一个有效的应答位 0)的图示</p>
+<p><img src="/2024/05/25/iic-timing-analysis/2.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="4、应答信号与非应答信号"><a href="#4、应答信号与非应答信号" class="headerlink" title="4、应答信号与非应答信号"></a>4、应答信号与非应答信号</h3><p>I2C 总线上的所有数据都是以 8 位字节传送的，发送器(主机)每发送一个字节，就在第 9 个时钟脉冲期间释放数据线，由接收器(从机)反馈一个应答信号。应答信号为低电平时，规定为有效应答位(ACK 简称应答位)，表示接收器已经成功地接收了该字节；应答信号为高电平时，规定为非应答位(NACK)，一般表示接收器接收该字节没有成功。对于反馈有效应答位 ACK 的要求是，接收器在第 9 个时钟脉冲之前的低电平期间将 SDA 线拉低，并且确保在该时钟的高电平期间为稳定的低电平。</p>
+<p>对非应答位(NACK)还要特别说明的是，还有以下四种情况 IIC 通信过程中会产生非应答位：</p>
+<p>1、接收器(从机)正在处理某些实时的操作无法与主机实现 IIC 通信的时候，接收器(从机)会给主机反馈一个非应答位(NACK)</p>
+<p>2、主机发送数据的过程中，从机无法解析发送的数据，接收器(从机)也会给主机反馈一个非应答位(NACK)</p>
+<p>3、主机发送数据的过程中，从机无法再继续接收数据，接收器(从机)也会给主机反馈一个非应答位(NACK)</p>
+<p>4、主机从从机中读取数据的过程中，主机不想再接收数据，主机会给从机反馈一个非应答位(NACK)，注意，这种情况是主机给从机反馈一个非应答位(NACK)</p>
+<p>关于有效应答位的图示在上一传输 0xaa 的图中可以清楚的看到，关于非应答位的图示见下图</p>
+<p><img src="/2024/05/25/iic-timing-analysis/3.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="三、IIC-写数据"><a href="#三、IIC-写数据" class="headerlink" title="三、IIC 写数据"></a>三、IIC 写数据</h2><h3 id="1、主机通过-IIC-总线往从机里面写数据"><a href="#1、主机通过-IIC-总线往从机里面写数据" class="headerlink" title="1、主机通过 IIC 总线往从机里面写数据"></a>1、主机通过 IIC 总线往从机里面写数据</h3><p>主机通过 IIC 总线往从机中写数据的时候，主机首先会发送一个起始信号，接着把 IIC 从机的 7 位设备地址后面添一个 0(设备地址后面的 0 表示主机向从机写数据，1 表示主机从从机中读数据)组成一个 8 位的数据，把这个 8 位的数据发给从机，发完这 8 位的数据以后主机马上释放 SDA 信号线等待从机的应答，如果从机正确收到这个数据，从机就会发送一个有效应答位 0 给主机告诉主机自己已经收到了数据，主机收到从机的有效应答位以后，接下来主机会发送想要写入的寄存器地址，寄存器发送完毕以后主机同样会释放 SDA 信号线等待从机的应答，从机如果正确收到了主机发过来的寄存器地址，从机会再次发送一个有效应答位给主机，主机收到从机的有效应答位 0 以后，接下来主机就会给从机发送想要写入从机的数据，从机正确收到这个数据以后仍然像之前两次一样会给主机发送一个有效应答位，主机收到这个有效应答位以后给从机发送一个停止信号，整个传输过程就结束了。下图是整个传输过程的示意图：</p>
+<p><img src="/2024/05/25/iic-timing-analysis/4.png" srcset="/img/loading.gif" lazyload></p>
+<p>特别注意：上图中灰色的地方表示主机正在控制 SDA 信号线，白色的地方表示从机正在控制 SDA 信号线。</p>
+<h2 id="四、IIC-读数据"><a href="#四、IIC-读数据" class="headerlink" title="四、IIC 读数据"></a>四、IIC 读数据</h2><h3 id="1、主机通过-IIC-总线从从机里面读数据"><a href="#1、主机通过-IIC-总线从从机里面读数据" class="headerlink" title="1、主机通过 IIC 总线从从机里面读数据"></a>1、主机通过 IIC 总线从从机里面读数据</h3><p>主机通过 IIC 总线从从机中读数据的过程与写数据的过程有相似之处，但是读数据的过程还多了一些额外的步骤。主机从从机读数据时主机首先会发送一个起始信号，接着把 IIC 从机的 7 位设备地址后面添一个 0(设备地址后面的 0 表示主机向从机写数据，1 表示主机从从机中读数据)，把这个 8 位的数据发给从机，发完这 8 位的数据以后主机马上释放 SDA 信号线等待从机的应答，如果从机正确收到这个数据，从机就会发送一个有效应答位 0 给主机告诉主机自己已经收到了数据，主机收到从机的有效应答位以后，接下来主机会发送想要读的寄存器地址，寄存器发送完毕以后主机同样会释放 SDA 信号线等待从机的应答，从机如果正确收到了主机发过来的寄存器地址，从机会再次发送一个有效应答位给主机，主机收到从机的有效应答位 0 以后，主机会给从机再次发送一次起始信号，接着把 IIC 从机的 7 位设备地址后面添一个 1(设备地址后面的 0 表示主机向从机写数据，1 表示主机从从机中读数据)，注意，第一次是在设备地址后面添 0，这一次是在设备地址后面添 1，把这个 8 位的数据发给从机，发完这 8 位的数据以后主机马上释放 SDA 信号线等待从机的应答，如果从机正确收到这个数据，从机就会发送一个有效应答位 0 给主机告诉主机自己已经收到了数据，接着从机继续占用 SDA 信号线给主机发送寄存器中的数据，发送完毕以后，主机再次占用 SDA 信号线发送一个非应答信号 1 给从机，主机发送一个停止信号给从机结束整个读数据的过程。下图是整个读数据过程的示意图</p>
+<p><img src="/2024/05/25/iic-timing-analysis/5.png" srcset="/img/loading.gif" lazyload></p>
+<p>特别注意：上图中灰色的地方表示主机正在控制 SDA 信号线，白色的地方表示从机正在控制 SDA 信号线。</p>
+<p>到这里其实已经可以大概明白了，下面就是原作者给的一些具体例子。</p>
+<h2 id="五、具体例子"><a href="#五、具体例子" class="headerlink" title="五、具体例子"></a>五、具体例子</h2><h3 id="1、编写-IIC-总线主机给从机发送数据的代码"><a href="#1、编写-IIC-总线主机给从机发送数据的代码" class="headerlink" title="1、编写 IIC 总线主机给从机发送数据的代码"></a>1、编写 IIC 总线主机给从机发送数据的代码</h3><p>实现 FPGA(主机)往 EEPROM(从机)的 0x23 这个地址写入 0x45 这个数据。</p>
+<h3 id="2、编写-IIC-总线主机从从机接收数据的代码"><a href="#2、编写-IIC-总线主机从从机接收数据的代码" class="headerlink" title="2、编写 IIC 总线主机从从机接收数据的代码"></a>2、编写 IIC 总线主机从从机接收数据的代码</h3><p>实现 FPGA(主机)从 EEPROM(从机)的 0x23 这个地址读出 0x45 这个数据，并用 0x45 这个数据的低四位驱动 4 个 LED。</p>
+<h3 id="（5-1）IIC-发送模块"><a href="#（5-1）IIC-发送模块" class="headerlink" title="（5.1）IIC 发送模块"></a>（5.1）IIC 发送模块</h3><p>发送一个字节的数据之前必须要先发送起始位，然后发送控制字节，接着等待应答，然后在发送字地址，接着在等待应答。数据发送完毕以后，在等待最后一个应答，应答成功后发送停止信号结束整个过程。</p>
+<p>抓到的时序图：</p>
+<p><img src="/2024/05/25/iic-timing-analysis/6.png" srcset="/img/loading.gif" lazyload></p>
+<p>为了更清晰的说明上面的时序，我把起始信号，停止信号，每个比特以及应答位全部框出来进一步解释如下：</p>
+<p><img src="/2024/05/25/iic-timing-analysis/7.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="（5-2）IIC-接收模块"><a href="#（5-2）IIC-接收模块" class="headerlink" title="（5.2）IIC 接收模块"></a>（5.2）IIC 接收模块</h3><p>接收一个字节的数据的过程与发送一个字节数据相比多了一个第二次的起始信号与控制字节(CONTROL BYTE)，而且第二个控制字节(CONTROL BYTE)的最低位应该为 1，表示 IIC 主机(FPGA)从 IIC 从机(24LC04)中读数据，当主机(FPGA)想结束读数据的过程时，它会给 IIC 设备发送一个非应答位 1，最后在发送停止信号结束整个读数据的过程。</p>
+<p>由于 EEPROM 是一种非易失性存储器，所以做在 IIC 发送数据的实验中往 24LC04 的 0x23 地址中的 0x45 这个数据在掉电以后并不会丢失。刚好可以通过这个接收模块给读出来，并用读出数据的最低位驱动四个 LED 灯，如果时序正确的话，四个 LED 灯会间隔亮起来。下面是我抓到的接收数据时序图：</p>
+<p><img src="/2024/05/25/iic-timing-analysis/8.png" srcset="/img/loading.gif" lazyload></p>
+<p>通过上面的时序图可以清楚的看到成功读出了 EEPROM 中的 0x45 这个数据，并且我板子上的四个 LED 灯也间隔亮了起来。</p>
+<p>为了更清晰的说明上面的时序，我把起始信号，停止信号，每个比特，应答位和非应答位全部框出来进一步解释如下：</p>
+<p><img src="/2024/05/25/iic-timing-analysis/9.png" srcset="/img/loading.gif" lazyload></p>
+<p>主要看基础介绍那里就行，基本一下就能看明白基础，后面的例子可以自己分析。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/" class="print-no-link">#硬件设计</a>
+      
+        <a href="/tags/IIC/" class="print-no-link">#IIC</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>IIC时序分析</div>
+      <div>https://tatazml.github.io/2024/05/25/iic-timing-analysis/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>TATAzml</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/05/robot-driver/" title="Robot_Driver">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Robot_Driver</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/04/cimc-competition-experience/" title="中国智能制造挑战赛（西门子杯）/CIMC竞赛经验分享">
+                        <span class="hidden-mobile">中国智能制造挑战赛（西门子杯）/CIMC竞赛经验分享</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"A5t4s3wEwYLsXLvvdXI75GnW-MdYXbMMI","appKey":"CBZIrTPFZpCu4jqTQHjLTiiW","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

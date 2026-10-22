@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="TATAzml">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="笔者于2023年11月参加江苏省机器人大赛，其主要的赛项基本集中在机器人类。当时实验室已购一台轮趣的小车，因此参加了相对合适的排挖地雷赛项。 背景条件场地背景在一块正方形的区域（边长2.5m）内，放置一定数量约8-10个的蓝色圆形铁片（D&#x3D;3cm），地上铺满绿色的布（这块布的作用很重要，稍后会介绍），同时会有一定的障碍物，23年当时的障碍物是一个边长30cm的正方形物体。 实验室简要搭建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="江苏省机器人大赛——排挖地雷赛项全纪录">
+<meta property="og:url" content="https://tatazml.github.io/2025/03/05/jiangsu-robot-mine-clearing/index.html">
+<meta property="og:site_name" content="TATAzml">
+<meta property="og:description" content="笔者于2023年11月参加江苏省机器人大赛，其主要的赛项基本集中在机器人类。当时实验室已购一台轮趣的小车，因此参加了相对合适的排挖地雷赛项。 背景条件场地背景在一块正方形的区域（边长2.5m）内，放置一定数量约8-10个的蓝色圆形铁片（D&#x3D;3cm），地上铺满绿色的布（这块布的作用很重要，稍后会介绍），同时会有一定的障碍物，23年当时的障碍物是一个边长30cm的正方形物体。 实验室简要搭建">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tatazml.github.io/2025/03/05/jiangsu-robot-mine-clearing/1.png">
+<meta property="og:image" content="https://tatazml.github.io/2025/03/05/jiangsu-robot-mine-clearing/2.png">
+<meta property="og:image" content="https://tatazml.github.io/2025/03/05/jiangsu-robot-mine-clearing/3.png">
+<meta property="og:image" content="https://tatazml.github.io/2025/03/05/jiangsu-robot-mine-clearing/4.png">
+<meta property="article:published_time" content="2025-03-05T10:57:00.000Z">
+<meta property="article:modified_time" content="2026-10-21T15:33:16.120Z">
+<meta property="article:author" content="TATAzml">
+<meta property="article:tag" content="竞赛">
+<meta property="article:tag" content="机器人">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tatazml.github.io/2025/03/05/jiangsu-robot-mine-clearing/1.png">
+  
+  
+  
+  <title>江苏省机器人大赛——排挖地雷赛项全纪录 - TATAzml</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tatazml.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"A5t4s3wEwYLsXLvvdXI75GnW-MdYXbMMI","app_key":"CBZIrTPFZpCu4jqTQHjLTiiW","server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TATAzml</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="江苏省机器人大赛——排挖地雷赛项全纪录"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-05 18:57" pubdate>
+          2025年3月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">江苏省机器人大赛——排挖地雷赛项全纪录</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>笔者于2023年11月参加江苏省机器人大赛，其主要的赛项基本集中在机器人类。当时实验室已购一台轮趣的小车，因此参加了相对合适的排挖地雷赛项。</p>
+<h1 id="背景条件"><a href="#背景条件" class="headerlink" title="背景条件"></a>背景条件</h1><h2 id="场地背景"><a href="#场地背景" class="headerlink" title="场地背景"></a>场地背景</h2><p>在一块正方形的区域（边长2.5m）内，放置一定数量约8-10个的蓝色圆形铁片（D&#x3D;3cm），地上铺满绿色的布（这块布的作用很重要，稍后会介绍），同时会有一定的障碍物，23年当时的障碍物是一个边长30cm的正方形物体。</p>
+<p>实验室简要搭建如下：</p>
+<p><img src="/2025/03/05/jiangsu-robot-mine-clearing/1.png" srcset="/img/loading.gif" lazyload></p>
+<p>图中简要围起来一个正方形区域，垃圾桶当做障碍物，蓝点散落。</p>
+<h2 id="比赛要求"><a href="#比赛要求" class="headerlink" title="比赛要求"></a>比赛要求</h2><p>要求小车从0.0的坐标起点出发，能够最快的找到各个蓝色点，在该点上停留2s并让蜂鸣器发出声音报警，谁找出的最多最快谁优胜。</p>
+<h1 id="参赛思路"><a href="#参赛思路" class="headerlink" title="参赛思路"></a>参赛思路</h1><h2 id="小车配置"><a href="#小车配置" class="headerlink" title="小车配置"></a>小车配置</h2><p>我们当时看了这个背景条件认为这个绝佳适合ROS小车，因为其地图是固定的，障碍物是固定的，只有蓝点是不确定的。</p>
+<p>所以当时是认为这个完美适合ROS小车去跑。</p>
+<p>ROS小车主要配备的是镭神的N10P激光雷达及车前部一个摄像头，以上都链接到NVIDIA Jetson Nano板上，同时板驱动下位机STM32对底盘进行驱动。</p>
+<h2 id="比赛思路"><a href="#比赛思路" class="headerlink" title="比赛思路"></a>比赛思路</h2><p>根据赛方发布的说明书，我们可以提前建图</p>
+<p>在实验室时，我们的思路是让小车先第一圈围绕地图环绕，同时车前摄像头在围绕时可以探测到绝大多数散落的蓝点。当时我们实际测试过，其摄景宽度是远大于正方形区域的一半的。因此只要让小车围绕着先跑一圈即可。</p>
+<p>这些跑第一圈获得的蓝点为什么可用？其思路如下：</p>
+<h3 id="坐标转换思路"><a href="#坐标转换思路" class="headerlink" title="坐标转换思路"></a>坐标转换思路</h3><p>当小车在某个位置其摄像头探测到一个蓝点时，其前置摄像头探测到的图像如下</p>
+<p><img src="/2025/03/05/jiangsu-robot-mine-clearing/2.png" srcset="/img/loading.gif" lazyload></p>
+<p>对，这个图可能根本看不出来有蓝点，但实际上是有的，我们选取下部三分之一的图像，做一个透视变换，该640<em>480图像就能变成640</em>180的图像，再将其拉伸到640*480，此时竖直上大致是符合实际的比例了，但底部的图像占比又过大导致失真，因此再对底部三分之二的区域进行线性缩窄，变换比例示意图如下</p>
+<p><img src="/2025/03/05/jiangsu-robot-mine-clearing/3.png" srcset="/img/loading.gif" lazyload></p>
+<p>最终得到的图片如下图</p>
+<p><img src="/2025/03/05/jiangsu-robot-mine-clearing/4.png" srcset="/img/loading.gif" lazyload></p>
+<p>在这个图片内，可以清晰的看见右上角的蓝色点，虽然相较其原圆形的比例有所畸形，但并不妨碍我们对其判断相对小车的二维坐标值。</p>
+<p>在该图中，每个瓷砖的边长是60cm，最终再依据像素位置计算蓝点相对小车的坐标，可以得其误差不超过4cm，远远高于比赛中要求±20cm的标准。</p>
+<p>接下来，依据小车此时相对于原点的坐标（包含横纵轴及朝向角度），这个坐标通过里程计odom等信息可以得到，经过矩阵变换可以得到蓝点相对于原点的坐标。</p>
+<h3 id="导航思路"><a href="#导航思路" class="headerlink" title="导航思路"></a>导航思路</h3><p>得到蓝点相对坐标后，模拟发布RVIZ的2D坐标点，启动导航程序，让小车围绕这几个点进行导航，同时添加起点即终点的（0,0）进入坐标为最后一个终点</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>为什么说绿色的底布是重要事项，因为我们在实验室里实验的时候用的是光滑的地板测试，那么融合后的里程计信息最终会出现误差，也就导致蓝点相对坐标严重误差，这也是导致我们最终没满意的原因。</p>
+<h1 id="其他组思路"><a href="#其他组思路" class="headerlink" title="其他组思路"></a>其他组思路</h1><p>大多数人用的还是STM32配一个摄像头，有少部分用了磁场检测金属的思路，但其思路皆为扫地式，即一遍遍围绕边长跑，直至扫完最后一个中心，我们现场观察下来其确实速度还很快，不过也可以考虑改善吧，万一地图再大一点，这个思路可能就有些呆了</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AB%9E%E8%B5%9B/" class="print-no-link">#竞赛</a>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="print-no-link">#机器人</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>江苏省机器人大赛——排挖地雷赛项全纪录</div>
+      <div>https://tatazml.github.io/2025/03/05/jiangsu-robot-mine-clearing/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>TATAzml</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/07/pcb-schematic-to-visio/" title="如何将立创EDA/Altium Designer绘制的PCB原理图导入/转换为Visio格式">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">如何将立创EDA/Altium Designer绘制的PCB原理图导入/转换为Visio格式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/05/robot-driver/" title="Robot_Driver">
+                        <span class="hidden-mobile">Robot_Driver</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"A5t4s3wEwYLsXLvvdXI75GnW-MdYXbMMI","appKey":"CBZIrTPFZpCu4jqTQHjLTiiW","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
