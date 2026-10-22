@@ -118,6 +118,29 @@
   
   
   <entry>
+    <title>虚拟机Samba配置</title>
+    <link href="/2025/04/19/vmware-samba-config/"/>
+    <url>/2025/04/19/vmware-samba-config/</url>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>虚拟机中的文件代码想在Windows里的vscode或者其他代码编辑软件去操作，且总是遇到一些问题，问题在part3里有介绍</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><h2 id="2-1-安装Samba"><a href="#2-1-安装Samba" class="headerlink" title="2.1 安装Samba"></a>2.1 安装Samba</h2><p>更新</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get update<br><span class="hljs-built_in">sudo</span> apt-get install samba<br></code></pre></td></tr></table></figure><h2 id="2-2-选择共享目录"><a href="#2-2-选择共享目录" class="headerlink" title="2.2 选择共享目录"></a>2.2 选择共享目录</h2><p>笔者习惯于将工作目录放在用户目录下的program</p><p>此处确认一下目录的权限为777</p><h2 id="2-3-修改Samba配置文件"><a href="#2-3-修改Samba配置文件" class="headerlink" title="2.3 修改Samba配置文件"></a>2.3 修改Samba配置文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> vim /etc/samba/smb.conf<br></code></pre></td></tr></table></figure><p>然后在文件的最后添加如下信息：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash">[share_directory]<br>        comment = program<br><br>        path = /home/book/program<br><br>        available = <span class="hljs-built_in">yes</span><br><br>        browseable = <span class="hljs-built_in">yes</span><br><br>        public = <span class="hljs-built_in">yes</span><br><br>        guest ok = <span class="hljs-built_in">yes</span><br><br>        <span class="hljs-built_in">read</span> only = no<br><br>        writeable = <span class="hljs-built_in">yes</span><br><br>force user = book<br></code></pre></td></tr></table></figure><h2 id="2-4-创建Samba用户"><a href="#2-4-创建Samba用户" class="headerlink" title="2.4 创建Samba用户"></a>2.4 创建Samba用户</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">touch</span> /etc/samba/smbpasswd<br><span class="hljs-built_in">sudo</span> smbpasswd -a book【这里的book是Linux里已经有的用户，不是随便创建的，比如我用的虚拟机里是韦东山提供的，用户默认就是book我就不改了】<br></code></pre></td></tr></table></figure><p><code>-a</code> 后面是用户名，然后输入两次密码。</p><h2 id="2-5-重启-Samba-服务器"><a href="#2-5-重启-Samba-服务器" class="headerlink" title="2.5 重启 Samba 服务器"></a>2.5 重启 Samba 服务器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> /etc/init.d/smbd restart<br></code></pre></td></tr></table></figure><h2 id="2-6-通过网络为宿主机添加共享文件夹"><a href="#2-6-通过网络为宿主机添加共享文件夹" class="headerlink" title="2.6 通过网络为宿主机添加共享文件夹"></a>2.6 通过网络为宿主机添加共享文件夹</h2><p>我的电脑 &gt; 右键 <code>添加一个网络位置</code> &gt; 下一步 &gt; 指定网络位置 &gt;</p><p><img src="/2025/04/19/vmware-samba-config/1.png"></p><p>输入共享的目录地址 &gt; 输入用户名和密码</p><p><img src="/2025/04/19/vmware-samba-config/2.png"></p><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h2 id="可访问文件内容但无法修改"><a href="#可访问文件内容但无法修改" class="headerlink" title="可访问文件内容但无法修改"></a>可访问文件内容但无法修改</h2><p>不要用愚蠢的方法将所有文件权限全部修改成其他组可访问的777，太危险了</p><p>参考配置为<a href="https://blog.csdn.net/kris_fei/article/details/53186327">force user</a>来实现修改</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Linux</tag>
+      
+      <tag>Samba</tag>
+      
+      <tag>虚拟机</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>STM32的BOOT0和BOOT1的作用</title>
     <link href="/2025/03/27/STM32%E7%9A%84BOOT0%E5%92%8CBOOT1%E7%9A%84%E4%BD%9C%E7%94%A8/"/>
     <url>/2025/03/27/STM32%E7%9A%84BOOT0%E5%92%8CBOOT1%E7%9A%84%E4%BD%9C%E7%94%A8/</url>
@@ -186,6 +209,115 @@
     <tags>
       
       <tag>Linux</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>如何将立创EDA/Altium Designer绘制的PCB原理图导入/转换为Visio格式</title>
+    <link href="/2025/03/07/pcb-schematic-to-visio/"/>
+    <url>/2025/03/07/pcb-schematic-to-visio/</url>
+    
+    <content type="html"><![CDATA[<p>相信各位写<strong>论文</strong>的学生在<strong>绘制论文电路图</strong>的时候都有苦恼，<strong>手绘太烦太累</strong>，在<strong>AD</strong>或<strong>立创EDA</strong>上已经绘制的<strong>又没有方便的导入软件</strong></p><p>me too，直至今天找到一种非常方便的导入方式，除了拐角处有那么一丢丢缺陷其他感觉不错，下面予以介绍，顺便做个记录以防自己再忘了。</p><h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>PCB原理图的绘制软件通常可以导出为PDF\DXF等格式，其中，PDF在论文中肯定是不可用的，但无论如何没有导出为Visio的vsdx的</p><p>那么最后的问题就是，哪种中间格式，能够承担起最佳转换的责任？</p><p>没错，就是DXF，这是一种CAD软件常用的格式，但放到这里可以说是机缘巧合的匹配。</p><h1 id="立创EDA转换为Visio"><a href="#立创EDA转换为Visio" class="headerlink" title="立创EDA转换为Visio"></a>立创EDA转换为Visio</h1><h2 id="1-软件更新到V2-2-36最新版本"><a href="#1-软件更新到V2-2-36最新版本" class="headerlink" title="1. 软件更新到V2.2.36最新版本"></a>1. 软件更新到V2.2.36最新版本</h2><p>（v2.1的笔者试过，没这个功能）</p><h2 id="2-框选你想导出的原理图部分，或不框选直接导出全部"><a href="#2-框选你想导出的原理图部分，或不框选直接导出全部" class="headerlink" title="2. 框选你想导出的原理图部分，或不框选直接导出全部"></a>2. 框选你想导出的原理图部分，或不框选直接导出全部</h2><h2 id="3-点击文件-导出-导出DXF"><a href="#3-点击文件-导出-导出DXF" class="headerlink" title="3. 点击文件-导出-导出DXF"></a>3. 点击文件-导出-导出DXF</h2><p><img src="/2025/03/07/pcb-schematic-to-visio/1.png"></p><h2 id="4-我这里就以框选了为例，注意不要勾选包含图纸"><a href="#4-我这里就以框选了为例，注意不要勾选包含图纸" class="headerlink" title="4. 我这里就以框选了为例，注意不要勾选包含图纸"></a>4. 我这里就以框选了为例，注意不要勾选包含图纸</h2><p><img src="/2025/03/07/pcb-schematic-to-visio/2.png"></p><h2 id="5-导出到指定目录"><a href="#5-导出到指定目录" class="headerlink" title="5. 导出到指定目录"></a>5. 导出到指定目录</h2><p><img src="/2025/03/07/pcb-schematic-to-visio/3.png"></p><h2 id="6-随后新建一个Visio空白绘图，插入-CAD绘图"><a href="#6-随后新建一个Visio空白绘图，插入-CAD绘图" class="headerlink" title="6. 随后新建一个Visio空白绘图，插入-CAD绘图"></a>6. 随后新建一个Visio空白绘图，插入-CAD绘图</h2><p><img src="/2025/03/07/pcb-schematic-to-visio/4.png"></p><p>插入刚刚导出的DXF文件</p><h2 id="7-配置CAD导入的比例"><a href="#7-配置CAD导入的比例" class="headerlink" title="7. 配置CAD导入的比例"></a>7. 配置CAD导入的比例</h2><p><img src="/2025/03/07/pcb-schematic-to-visio/5.png"></p><h2 id="8-转换格式"><a href="#8-转换格式" class="headerlink" title="8. 转换格式"></a>8. 转换格式</h2><p><img src="/2025/03/07/pcb-schematic-to-visio/6.png"></p><p>可以看到此时还是一个CAD文件，转换一下</p><p><img src="/2025/03/07/pcb-schematic-to-visio/7.png"></p><h2 id="9-细节调整"><a href="#9-细节调整" class="headerlink" title="9. 细节调整"></a>9. 细节调整</h2><p>经过上一步，已经初见成效</p><p><img src="/2025/03/07/pcb-schematic-to-visio/8.png"></p><p>但线宽明显有点细，常用的一般为0.75pt，稍作修改</p><p>但之后的问题就存在了，我想修改整体颜色为纯黑白，但一旦这么修改，文本框的线条也会变成黑色，需要一个个点击文本框去修改为无线条，同时字体也可以全选去按需修改</p><p><img src="/2025/03/07/pcb-schematic-to-visio/9.png"></p><p><strong>因此，这就引入了新使用的方法，转换为AD，再导出DXF就没有这个问题了</strong></p><h1 id="AD转换出Visio"><a href="#AD转换出Visio" class="headerlink" title="AD转换出Visio"></a>AD转换出Visio</h1><p>接上步嘉立创导出为AD的工程后直接用AD打开，或者原来就是AD工程也一样。然后按如下步骤即可</p><h2 id="1-导出为DXF"><a href="#1-导出为DXF" class="headerlink" title="1. 导出为DXF"></a>1. 导出为DXF</h2><p>笔者AD版本为19，其他版本尚未尝试，但应该都有导出为DXF的功能</p><p><img src="/2025/03/07/pcb-schematic-to-visio/10.png"></p><p><img src="/2025/03/07/pcb-schematic-to-visio/11.png"></p><p><strong>使用AD导出时注意版本！</strong>Visio 2019支持AutoCAD 2007及更早版本，不要选择R12等版本，选择2000版本最好！！</p><p>一次使用AutoCAD R12版本导出时，本机装的Visio 2019并不支持，结果将线条识别成了图块，无法全选调整其宽度。</p><p>AD的导出DXF不知道是不是我的设置问题，不能像立创EDA那样框选一个部分，直接导出整个原理图了</p><h2 id="2-Visio插入DXF"><a href="#2-Visio插入DXF" class="headerlink" title="2. Visio插入DXF"></a>2. Visio插入DXF</h2><p>同理，在Visio插入</p><p><img src="/2025/03/07/pcb-schematic-to-visio/12.png"></p><p><strong>问题来了</strong>，这个直接使用默认的比例插入会变得特别小，因此这边在插入的时候注意选择自定义比例，同时预览一下，看大致大小没问题</p><p><img src="/2025/03/07/pcb-schematic-to-visio/13.png"></p><h2 id="3-转换为Visio可用"><a href="#3-转换为Visio可用" class="headerlink" title="3. 转换为Visio可用"></a>3. 转换为Visio可用</h2><p>完成第二步后，很惊讶，居然是个空白！还好我隐约看见了这一段有点色差，</p><p><img src="/2025/03/07/pcb-schematic-to-visio/14.png"></p><p>其实无妨，照样选中，转换</p><p><img src="/2025/03/07/pcb-schematic-to-visio/15.png"></p><p><img src="/2025/03/07/pcb-schematic-to-visio/16.png"></p><p><img src="/2025/03/07/pcb-schematic-to-visio/17.png"></p><p>稍微等一下，就出图了</p><p><img src="/2025/03/07/pcb-schematic-to-visio/18.png"></p><h2 id="4-调整比例"><a href="#4-调整比例" class="headerlink" title="4. 调整比例"></a>4. 调整比例</h2><p>其实这样就直接可以用了，但为了能直接在word里用，还是稍微调整下，比如<strong>先选中需要的部分调整好大小比例，再调线宽0.75pt，字体大小8pt</strong>等操作</p><p><img src="/2025/03/07/pcb-schematic-to-visio/19.png"></p><p>注：AD的render text with GDI+功能似乎要取消勾选（tools-schematic-general-render text with GDI+）</p><p><img src="/2025/03/07/pcb-schematic-to-visio/20.png"></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>硬件设计</tag>
+      
+      <tag>PCB</tag>
+      
+      <tag>EDA</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>江苏省机器人大赛——排挖地雷赛项全纪录</title>
+    <link href="/2025/03/05/jiangsu-robot-mine-clearing/"/>
+    <url>/2025/03/05/jiangsu-robot-mine-clearing/</url>
+    
+    <content type="html"><![CDATA[<p>笔者于2023年11月参加江苏省机器人大赛，其主要的赛项基本集中在机器人类。当时实验室已购一台轮趣的小车，因此参加了相对合适的排挖地雷赛项。</p><h1 id="背景条件"><a href="#背景条件" class="headerlink" title="背景条件"></a>背景条件</h1><h2 id="场地背景"><a href="#场地背景" class="headerlink" title="场地背景"></a>场地背景</h2><p>在一块正方形的区域（边长2.5m）内，放置一定数量约8-10个的蓝色圆形铁片（D&#x3D;3cm），地上铺满绿色的布（这块布的作用很重要，稍后会介绍），同时会有一定的障碍物，23年当时的障碍物是一个边长30cm的正方形物体。</p><p>实验室简要搭建如下：</p><p><img src="/2025/03/05/jiangsu-robot-mine-clearing/1.png"></p><p>图中简要围起来一个正方形区域，垃圾桶当做障碍物，蓝点散落。</p><h2 id="比赛要求"><a href="#比赛要求" class="headerlink" title="比赛要求"></a>比赛要求</h2><p>要求小车从0.0的坐标起点出发，能够最快的找到各个蓝色点，在该点上停留2s并让蜂鸣器发出声音报警，谁找出的最多最快谁优胜。</p><h1 id="参赛思路"><a href="#参赛思路" class="headerlink" title="参赛思路"></a>参赛思路</h1><h2 id="小车配置"><a href="#小车配置" class="headerlink" title="小车配置"></a>小车配置</h2><p>我们当时看了这个背景条件认为这个绝佳适合ROS小车，因为其地图是固定的，障碍物是固定的，只有蓝点是不确定的。</p><p>所以当时是认为这个完美适合ROS小车去跑。</p><p>ROS小车主要配备的是镭神的N10P激光雷达及车前部一个摄像头，以上都链接到NVIDIA Jetson Nano板上，同时板驱动下位机STM32对底盘进行驱动。</p><h2 id="比赛思路"><a href="#比赛思路" class="headerlink" title="比赛思路"></a>比赛思路</h2><p>根据赛方发布的说明书，我们可以提前建图</p><p>在实验室时，我们的思路是让小车先第一圈围绕地图环绕，同时车前摄像头在围绕时可以探测到绝大多数散落的蓝点。当时我们实际测试过，其摄景宽度是远大于正方形区域的一半的。因此只要让小车围绕着先跑一圈即可。</p><p>这些跑第一圈获得的蓝点为什么可用？其思路如下：</p><h3 id="坐标转换思路"><a href="#坐标转换思路" class="headerlink" title="坐标转换思路"></a>坐标转换思路</h3><p>当小车在某个位置其摄像头探测到一个蓝点时，其前置摄像头探测到的图像如下</p><p><img src="/2025/03/05/jiangsu-robot-mine-clearing/2.png"></p><p>对，这个图可能根本看不出来有蓝点，但实际上是有的，我们选取下部三分之一的图像，做一个透视变换，该640<em>480图像就能变成640</em>180的图像，再将其拉伸到640*480，此时竖直上大致是符合实际的比例了，但底部的图像占比又过大导致失真，因此再对底部三分之二的区域进行线性缩窄，变换比例示意图如下</p><p><img src="/2025/03/05/jiangsu-robot-mine-clearing/3.png"></p><p>最终得到的图片如下图</p><p><img src="/2025/03/05/jiangsu-robot-mine-clearing/4.png"></p><p>在这个图片内，可以清晰的看见右上角的蓝色点，虽然相较其原圆形的比例有所畸形，但并不妨碍我们对其判断相对小车的二维坐标值。</p><p>在该图中，每个瓷砖的边长是60cm，最终再依据像素位置计算蓝点相对小车的坐标，可以得其误差不超过4cm，远远高于比赛中要求±20cm的标准。</p><p>接下来，依据小车此时相对于原点的坐标（包含横纵轴及朝向角度），这个坐标通过里程计odom等信息可以得到，经过矩阵变换可以得到蓝点相对于原点的坐标。</p><h3 id="导航思路"><a href="#导航思路" class="headerlink" title="导航思路"></a>导航思路</h3><p>得到蓝点相对坐标后，模拟发布RVIZ的2D坐标点，启动导航程序，让小车围绕这几个点进行导航，同时添加起点即终点的（0,0）进入坐标为最后一个终点</p><h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>为什么说绿色的底布是重要事项，因为我们在实验室里实验的时候用的是光滑的地板测试，那么融合后的里程计信息最终会出现误差，也就导致蓝点相对坐标严重误差，这也是导致我们最终没满意的原因。</p><h1 id="其他组思路"><a href="#其他组思路" class="headerlink" title="其他组思路"></a>其他组思路</h1><p>大多数人用的还是STM32配一个摄像头，有少部分用了磁场检测金属的思路，但其思路皆为扫地式，即一遍遍围绕边长跑，直至扫完最后一个中心，我们现场观察下来其确实速度还很快，不过也可以考虑改善吧，万一地图再大一点，这个思路可能就有些呆了</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>竞赛</tag>
+      
+      <tag>机器人</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Robot_Driver</title>
+    <link href="/2025/03/05/robot-driver/"/>
+    <url>/2025/03/05/robot-driver/</url>
+    
+    <content type="html"><![CDATA[<h1 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h1><p>项目主题：基于国产RT-Thread实时操作系统的智能搬运机器人</p><p>硬件设计：STM32核心板+扩展板设计，具备多底盘自动判断与驱动功能。同时在电驱系统上搭配激光雷达数据输入</p><p>软件设计：RT-Thread</p><h1 id="1-硬件设计"><a href="#1-硬件设计" class="headerlink" title="1.硬件设计"></a>1.硬件设计</h1><p>目前尚未毕业，暂时不公开放新版设计图及PCB工程，还请理解。等过两个月毕业了就设置public</p><h2 id="1-1核心板设计"><a href="#1-1核心板设计" class="headerlink" title="1.1核心板设计"></a>1.1核心板设计</h2><p>核心板主控为STM32F407VET6，为什么选这个？（当然是因为大家用的多）</p><p>参考了很多轮趣及立创开发板的设计，毕竟实验室买了轮趣全套的小车</p><p>为了方便使用立创SMT的时候降本，替换了扩展库的器件为标准库的，降低20元&#x2F;种的换料费</p><h3 id="1-1-1主控电源"><a href="#1-1-1主控电源" class="headerlink" title="1.1.1主控电源"></a>1.1.1主控电源</h3><p><strong>5V</strong></p><p>因为核心板经常接的是PC端的USB，而又有板载电源独立供电的需求，所以在这里将USB_5V和板载的供电PIN_5V做了隔离，用的是标准库的肖特基二极管1N5819，以防板载电源反灌到电脑的USB端口。</p><p><img src="/2025/03/05/robot-driver/1.png"></p><p><strong>5V-3V3</strong></p><p>除此之外，通用的5V转3.3V设计用标准库的AMS1117-3.3，这个非常便宜，但注意VIN和VOUT都要接带有极性的钽电容为佳，刚好标准库里有一个10uF电容，直接接到输入输出端。</p><p><img src="/2025/03/05/robot-driver/2.png"></p><h3 id="1-1-2芯片电源"><a href="#1-1-2芯片电源" class="headerlink" title="1.1.2芯片电源"></a>1.1.2芯片电源</h3><p>芯片的电源有VDD、VDDA、VSS、VSSA、VBAT、VREF+</p><p>以下大概是其各个的作用：</p><p>VDD：V Drain 即电子流向的漏极，也就是+正极，因历史原因理论上的VD变为VDD</p><p>VDDA：VDD的模拟部分，即为模拟部分供电的VDD正极</p><p>VSS：V Source 即电子流出的源极，也就是-负极，因历史原因理论上的VS变为VSS</p><p>VSSA：VSS的模拟部分，即为模拟部分供电的VSS负极</p><p>VBAT：V BATTERY，即电源或外部电池的接入</p><p>VREF+：V REFERENCE，即参考电压，可以用VDDA接一个47Ω电阻，也可以使用其他的更精准的电压源，这里接VDDA的3.3V为芯片的ADC采样提供标准参考电压。</p><p>还要在每对供电脚都放一个100nF电容，注意电流回流路径</p><p><img src="/2025/03/05/robot-driver/3.png"></p><h3 id="1-1-3主控电路"><a href="#1-1-3主控电路" class="headerlink" title="1.1.3主控电路"></a>1.1.3主控电路</h3><p>STM32还有两个接电容的引脚VCAP_1及VCAP_2，为了保证内部主调压器的电压稳定，选择不当可能会引起程序无法下载或者运行不稳定的情况。数据手册里也给出这个电容的相关参考参数。我们这里选取2.2uF</p><p><img src="/2025/03/05/robot-driver/4.png"></p><h3 id="1-1-4晶振电路"><a href="#1-1-4晶振电路" class="headerlink" title="1.1.4晶振电路"></a>1.1.4晶振电路</h3><p>晶振电路需要计算其匹配的电容，计算电容的公式如下：</p><p><img src="/2025/03/05/robot-driver/5.png"></p><p>CL&#x3D;CS+(CD×CG)&#x2F;(CD+CG )</p><p>其中，CS为晶体两个管脚间的寄生电容（Shunt Capacitance），在晶振的数据手册上可以找到</p><p>CD表示晶体振荡电路输出管脚到地的总电容，包括PCB走线电容CPCB、芯片管脚寄生电容CO、外加匹配电容CL2，即CD&#x3D;CPCB+CO+CL2</p><p>CG表示晶体振荡电路输入管脚到地的总电容，包括PCB走线电容CPCB、芯片管脚寄生电容CI、外加匹配电容CL1，即CG&#x3D;CPCB+CI+CL1</p><p>通常情况下，为了保持晶振的负载平衡，要求CG&#x3D;CD</p><p>了解以上公式后，去晶振及芯片的数据手册中找CL、Cs、Ci</p><p>该图片为选取的晶振参数</p><p><img src="/2025/03/05/robot-driver/6.png"></p><p>从该图得知，CL&#x3D;20pF(这个已知不需要纠结10或20），Cs&#x3D;5pF</p><p>再到stm32f407手册里搜索input capacitance，得到Ci&#x3D;5pF的数值</p><p><img src="/2025/03/05/robot-driver/7.png"></p><p>所以原式就变成了</p><p>CL &#x3D; CG*CG&#x2F;(CG+CG) + Cs</p><p>20 &#x3D; CG&#x2F;2 + 5</p><p>CG &#x3D; 30pF</p><p>也就是</p><p>30 &#x3D; Ci + Cpcb + CL1</p><p>30 &#x3D; 5 + 0.2 + CL1(晶振布线时都会要求晶振尽量靠近振荡电路，所以CPCB一般比较小，取0.2pF)</p><p>CL1 &#x3D; 24.8pF</p><p>考虑到嘉立创基础库里最相近的只有22pF，所以CL1与CL2都选择22pF的值</p><p><img src="/2025/03/05/robot-driver/8.png"></p><p>掉电后不需要记录系统时间，舍去低速晶振。</p><p>最后注意数字地模拟地单点相连，可以选0Ω电阻或者磁珠，但通常选电阻因为其对所有频段都有过滤效果。</p><h3 id="1-1-5按键电路"><a href="#1-1-5按键电路" class="headerlink" title="1.1.5按键电路"></a>1.1.5按键电路</h3><p>按键电路主要分为平时拉低的和平时拉高的，尤其是复位按键、唤醒按键和BOOT0或1按键这种特殊电位的按键。其中复位按键一般拉高，用户（唤醒）按键及BOOT0一般拉低</p><p><img src="/2025/03/05/robot-driver/9.png"></p><h3 id="1-1-6预留IO"><a href="#1-1-6预留IO" class="headerlink" title="1.1.6预留IO"></a>1.1.6预留IO</h3><p>自行预留即可。</p><p><img src="/2025/03/05/robot-driver/10.png"></p><h2 id="1-2扩展板设计"><a href="#1-2扩展板设计" class="headerlink" title="1.2扩展板设计"></a>1.2扩展板设计</h2><h1 id="2-软件设计"><a href="#2-软件设计" class="headerlink" title="2.软件设计"></a>2.软件设计</h1><p><img src="/2025/03/05/robot-driver/11.jpg"></p><h1 id="未完待续……"><a href="#未完待续……" class="headerlink" title="未完待续……"></a>未完待续……</h1>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>机器人</tag>
+      
+      <tag>驱动开发</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>IIC时序分析</title>
+    <link href="/2024/05/25/iic-timing-analysis/"/>
+    <url>/2024/05/25/iic-timing-analysis/</url>
+    
+    <content type="html"><![CDATA[<p>转载博客：<a href="https://www.cnblogs.com/liujinggang/p/9656358.html">https://www.cnblogs.com/liujinggang/p/9656358.html</a> 以及 <a href="https://www.cnblogs.com/xuyan123/p/14134246.html">https://www.cnblogs.com/xuyan123/p/14134246.html</a></p><p>我也怕什么时候大神把博客删除了，后面这个链接简单明了，一下就让我看明白了 iic 的基础。</p><h2 id="一、IIC-总线协议介绍"><a href="#一、IIC-总线协议介绍" class="headerlink" title="一、IIC 总线协议介绍"></a>一、IIC 总线协议介绍</h2><p>I2C 总线是由数据线 SDA 和时钟 SCL 构成的串行总线，可发送和接收数据，并且在硬件上都需要接一个上拉电阻到 VCC。</p><p>各种被控制电路均并联在这条总线上，但就像电话机一样只有拨通各自的号码才能工作，所以每个电路和模块都有唯一的地址，这样，各控制电路虽然挂在同一条总线上，却彼此独立，互不相关。</p><h2 id="二、IIC-的通信状态"><a href="#二、IIC-的通信状态" class="headerlink" title="二、IIC 的通信状态"></a>二、IIC 的通信状态</h2><p>总的来说，IIC 总线在通信的过程中一共有一下几种状态：</p><h3 id="1、空闲状态"><a href="#1、空闲状态" class="headerlink" title="1、空闲状态"></a>1、空闲状态</h3><p>IIC 总线的 SDA 和 SCL 两条信号线同时处于高电平时，规定为总线的空闲状态。此时各个器件的输出级场效应管均处在截止状态，即释放总线，由两条信号线各自的上拉电阻把电平拉高。</p><h3 id="2、起始状态和结束状态"><a href="#2、起始状态和结束状态" class="headerlink" title="2、起始状态和结束状态"></a>2、起始状态和结束状态</h3><p>在时钟线 SCL 保持高电平期间，数据线 SDA 上的电平被拉低(即负跳变)，定义为 I2C 总线总线的起始信号，它标志着一次数据传输的开始。起始信号是由主控器主动建立的，在建立该信号之前 I2C 总线必须处于空闲状态。</p><p>在时钟线 SCL 保持高电平期间，数据线 SDA 被释放，使得 SDA 返回高电平(即正跳变)，称为 I2C 总线的停止信号，它标志着一次数据传输的终止。停止信号也是由主控器主动建立的，建立该信号之后，I2C 总线将返回空闲状态。</p><p>起始信号和结束信号如下图所示</p><p><img src="/2024/05/25/iic-timing-analysis/1.png"></p><h3 id="3、有效的数据位传输"><a href="#3、有效的数据位传输" class="headerlink" title="3、有效的数据位传输"></a>3、有效的数据位传输</h3><p>在 IIC 总线上传送的每一位数据都有一个时钟脉冲相对应(或同步控制)，即在 SCL 串行时钟的配合下，数据在 SDA 上从高位向低位依次串行传送每一位的数据。进行数据传送时，在 SCL 呈现高电平期间，SDA 上的电平必须保持稳定，低电平为数据 0，高电平为数据 1。只有在 SCL 为低电平期间，才允许 SDA 上的电平改变状态。下图是 0xaa 在 IIC 总线上有效传输(有效传输是指第 9 个时钟的高电平期间，从机给主机反馈了一个有效的应答位 0)的图示</p><p><img src="/2024/05/25/iic-timing-analysis/2.png"></p><h3 id="4、应答信号与非应答信号"><a href="#4、应答信号与非应答信号" class="headerlink" title="4、应答信号与非应答信号"></a>4、应答信号与非应答信号</h3><p>I2C 总线上的所有数据都是以 8 位字节传送的，发送器(主机)每发送一个字节，就在第 9 个时钟脉冲期间释放数据线，由接收器(从机)反馈一个应答信号。应答信号为低电平时，规定为有效应答位(ACK 简称应答位)，表示接收器已经成功地接收了该字节；应答信号为高电平时，规定为非应答位(NACK)，一般表示接收器接收该字节没有成功。对于反馈有效应答位 ACK 的要求是，接收器在第 9 个时钟脉冲之前的低电平期间将 SDA 线拉低，并且确保在该时钟的高电平期间为稳定的低电平。</p><p>对非应答位(NACK)还要特别说明的是，还有以下四种情况 IIC 通信过程中会产生非应答位：</p><p>1、接收器(从机)正在处理某些实时的操作无法与主机实现 IIC 通信的时候，接收器(从机)会给主机反馈一个非应答位(NACK)</p><p>2、主机发送数据的过程中，从机无法解析发送的数据，接收器(从机)也会给主机反馈一个非应答位(NACK)</p><p>3、主机发送数据的过程中，从机无法再继续接收数据，接收器(从机)也会给主机反馈一个非应答位(NACK)</p><p>4、主机从从机中读取数据的过程中，主机不想再接收数据，主机会给从机反馈一个非应答位(NACK)，注意，这种情况是主机给从机反馈一个非应答位(NACK)</p><p>关于有效应答位的图示在上一传输 0xaa 的图中可以清楚的看到，关于非应答位的图示见下图</p><p><img src="/2024/05/25/iic-timing-analysis/3.png"></p><h2 id="三、IIC-写数据"><a href="#三、IIC-写数据" class="headerlink" title="三、IIC 写数据"></a>三、IIC 写数据</h2><h3 id="1、主机通过-IIC-总线往从机里面写数据"><a href="#1、主机通过-IIC-总线往从机里面写数据" class="headerlink" title="1、主机通过 IIC 总线往从机里面写数据"></a>1、主机通过 IIC 总线往从机里面写数据</h3><p>主机通过 IIC 总线往从机中写数据的时候，主机首先会发送一个起始信号，接着把 IIC 从机的 7 位设备地址后面添一个 0(设备地址后面的 0 表示主机向从机写数据，1 表示主机从从机中读数据)组成一个 8 位的数据，把这个 8 位的数据发给从机，发完这 8 位的数据以后主机马上释放 SDA 信号线等待从机的应答，如果从机正确收到这个数据，从机就会发送一个有效应答位 0 给主机告诉主机自己已经收到了数据，主机收到从机的有效应答位以后，接下来主机会发送想要写入的寄存器地址，寄存器发送完毕以后主机同样会释放 SDA 信号线等待从机的应答，从机如果正确收到了主机发过来的寄存器地址，从机会再次发送一个有效应答位给主机，主机收到从机的有效应答位 0 以后，接下来主机就会给从机发送想要写入从机的数据，从机正确收到这个数据以后仍然像之前两次一样会给主机发送一个有效应答位，主机收到这个有效应答位以后给从机发送一个停止信号，整个传输过程就结束了。下图是整个传输过程的示意图：</p><p><img src="/2024/05/25/iic-timing-analysis/4.png"></p><p>特别注意：上图中灰色的地方表示主机正在控制 SDA 信号线，白色的地方表示从机正在控制 SDA 信号线。</p><h2 id="四、IIC-读数据"><a href="#四、IIC-读数据" class="headerlink" title="四、IIC 读数据"></a>四、IIC 读数据</h2><h3 id="1、主机通过-IIC-总线从从机里面读数据"><a href="#1、主机通过-IIC-总线从从机里面读数据" class="headerlink" title="1、主机通过 IIC 总线从从机里面读数据"></a>1、主机通过 IIC 总线从从机里面读数据</h3><p>主机通过 IIC 总线从从机中读数据的过程与写数据的过程有相似之处，但是读数据的过程还多了一些额外的步骤。主机从从机读数据时主机首先会发送一个起始信号，接着把 IIC 从机的 7 位设备地址后面添一个 0(设备地址后面的 0 表示主机向从机写数据，1 表示主机从从机中读数据)，把这个 8 位的数据发给从机，发完这 8 位的数据以后主机马上释放 SDA 信号线等待从机的应答，如果从机正确收到这个数据，从机就会发送一个有效应答位 0 给主机告诉主机自己已经收到了数据，主机收到从机的有效应答位以后，接下来主机会发送想要读的寄存器地址，寄存器发送完毕以后主机同样会释放 SDA 信号线等待从机的应答，从机如果正确收到了主机发过来的寄存器地址，从机会再次发送一个有效应答位给主机，主机收到从机的有效应答位 0 以后，主机会给从机再次发送一次起始信号，接着把 IIC 从机的 7 位设备地址后面添一个 1(设备地址后面的 0 表示主机向从机写数据，1 表示主机从从机中读数据)，注意，第一次是在设备地址后面添 0，这一次是在设备地址后面添 1，把这个 8 位的数据发给从机，发完这 8 位的数据以后主机马上释放 SDA 信号线等待从机的应答，如果从机正确收到这个数据，从机就会发送一个有效应答位 0 给主机告诉主机自己已经收到了数据，接着从机继续占用 SDA 信号线给主机发送寄存器中的数据，发送完毕以后，主机再次占用 SDA 信号线发送一个非应答信号 1 给从机，主机发送一个停止信号给从机结束整个读数据的过程。下图是整个读数据过程的示意图</p><p><img src="/2024/05/25/iic-timing-analysis/5.png"></p><p>特别注意：上图中灰色的地方表示主机正在控制 SDA 信号线，白色的地方表示从机正在控制 SDA 信号线。</p><p>到这里其实已经可以大概明白了，下面就是原作者给的一些具体例子。</p><h2 id="五、具体例子"><a href="#五、具体例子" class="headerlink" title="五、具体例子"></a>五、具体例子</h2><h3 id="1、编写-IIC-总线主机给从机发送数据的代码"><a href="#1、编写-IIC-总线主机给从机发送数据的代码" class="headerlink" title="1、编写 IIC 总线主机给从机发送数据的代码"></a>1、编写 IIC 总线主机给从机发送数据的代码</h3><p>实现 FPGA(主机)往 EEPROM(从机)的 0x23 这个地址写入 0x45 这个数据。</p><h3 id="2、编写-IIC-总线主机从从机接收数据的代码"><a href="#2、编写-IIC-总线主机从从机接收数据的代码" class="headerlink" title="2、编写 IIC 总线主机从从机接收数据的代码"></a>2、编写 IIC 总线主机从从机接收数据的代码</h3><p>实现 FPGA(主机)从 EEPROM(从机)的 0x23 这个地址读出 0x45 这个数据，并用 0x45 这个数据的低四位驱动 4 个 LED。</p><h3 id="（5-1）IIC-发送模块"><a href="#（5-1）IIC-发送模块" class="headerlink" title="（5.1）IIC 发送模块"></a>（5.1）IIC 发送模块</h3><p>发送一个字节的数据之前必须要先发送起始位，然后发送控制字节，接着等待应答，然后在发送字地址，接着在等待应答。数据发送完毕以后，在等待最后一个应答，应答成功后发送停止信号结束整个过程。</p><p>抓到的时序图：</p><p><img src="/2024/05/25/iic-timing-analysis/6.png"></p><p>为了更清晰的说明上面的时序，我把起始信号，停止信号，每个比特以及应答位全部框出来进一步解释如下：</p><p><img src="/2024/05/25/iic-timing-analysis/7.png"></p><h3 id="（5-2）IIC-接收模块"><a href="#（5-2）IIC-接收模块" class="headerlink" title="（5.2）IIC 接收模块"></a>（5.2）IIC 接收模块</h3><p>接收一个字节的数据的过程与发送一个字节数据相比多了一个第二次的起始信号与控制字节(CONTROL BYTE)，而且第二个控制字节(CONTROL BYTE)的最低位应该为 1，表示 IIC 主机(FPGA)从 IIC 从机(24LC04)中读数据，当主机(FPGA)想结束读数据的过程时，它会给 IIC 设备发送一个非应答位 1，最后在发送停止信号结束整个读数据的过程。</p><p>由于 EEPROM 是一种非易失性存储器，所以做在 IIC 发送数据的实验中往 24LC04 的 0x23 地址中的 0x45 这个数据在掉电以后并不会丢失。刚好可以通过这个接收模块给读出来，并用读出数据的最低位驱动四个 LED 灯，如果时序正确的话，四个 LED 灯会间隔亮起来。下面是我抓到的接收数据时序图：</p><p><img src="/2024/05/25/iic-timing-analysis/8.png"></p><p>通过上面的时序图可以清楚的看到成功读出了 EEPROM 中的 0x45 这个数据，并且我板子上的四个 LED 灯也间隔亮了起来。</p><p>为了更清晰的说明上面的时序，我把起始信号，停止信号，每个比特，应答位和非应答位全部框出来进一步解释如下：</p><p><img src="/2024/05/25/iic-timing-analysis/9.png"></p><p>主要看基础介绍那里就行，基本一下就能看明白基础，后面的例子可以自己分析。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>硬件设计</tag>
+      
+      <tag>IIC</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>中国智能制造挑战赛（西门子杯）/CIMC竞赛经验分享</title>
+    <link href="/2022/04/04/cimc-competition-experience/"/>
+    <url>/2022/04/04/cimc-competition-experience/</url>
+    
+    <content type="html"><![CDATA[<p>最近有学弟来找我说想参加CIMC，借着这次机会我把我21年参加的经验都分享出来，虽然我只参加了初赛，我还是想把当年如何混到初赛特等的经验发出来。</p><p>大三的时候我就是觉得自己的竞赛经历堪称零蛋，实在是受不了到时候考研的时候连一个奖项都没有的尴尬自我介绍，所以暑假的时候决定留校参赛，不过我也想提醒各位考研党不要光顾着比赛把自己暑假复习任务打乱了，比赛比着比着很容易忘记了自己还要复习考研初试。</p><p>当然，有志参加比赛的可能是因为兴趣，可能是因为自己的人生规划，在这里向每一个付诸实践的同学致敬。</p><p>我的个人邮箱<a href="mailto:&#x7a;&#x68;&#101;&#x6e;&#x67;&#103;&#x71;&#x32;&#x30;&#48;&#x30;&#x40;&#x31;&#54;&#x33;&#x2e;&#x63;&#111;&#x6d;">&#x7a;&#x68;&#101;&#x6e;&#x67;&#103;&#x71;&#x32;&#x30;&#48;&#x30;&#x40;&#x31;&#54;&#x33;&#x2e;&#x63;&#111;&#x6d;</a>，欢迎各位大佬们提出宝贵的意见。</p><h1 id="前期了解"><a href="#前期了解" class="headerlink" title="前期了解"></a>前期了解</h1><h2 id="性价比"><a href="#性价比" class="headerlink" title="性价比"></a>性价比</h2><h3 id="比赛含金量"><a href="#比赛含金量" class="headerlink" title="比赛含金量"></a>比赛含金量</h3><p>CIMC是教育部A类竞赛，教育部总共有57个A类竞赛，相较于一般比赛，西门子杯还是有非常高的含金量的，但是对比挑战杯、电子设计大赛、互联网+等还是欠缺。</p><h3 id="耗时"><a href="#耗时" class="headerlink" title="耗时"></a>耗时</h3><p>楼主我参加的是<em>流程组</em>，主要内容就是在设备（SMPT1000）上进行出料浓度调控，这个比较讨厌的一点就是不能立刻看到结果，只能一直等着反应。总的来说耗时还是比较多的。</p><h3 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h3><p>因为拿奖比较容易，我所在的华东二赛区其实参加的队伍不多，基本上我校参加的队伍都拿到了奖项，性价比还算高。</p><p>如果学校是有设备的话那么调试起来非常容易。到初赛现场虽然有改动但是其实不会特别大，只有决赛才会有非常大的改动。所以学校要是有设备的同学，你如果暑假也没啥事不如留校参加一下拿个省奖还是香喷喷。</p><p>前期大约5、6月准备，7月中旬比赛，8月中旬决赛。</p><h1 id="时间安排"><a href="#时间安排" class="headerlink" title="时间安排"></a>时间安排</h1><ul><li>step1 准备（5、6月份）如果再早没必要哈，老师让去就划划水就行，反正花太多时间一样的</li><li>step2 初赛（7月中旬）队里要有个买车票定宾馆的哈哈</li><li>step3 决赛（8月中旬）21年的决赛因为疫情推迟到11月的线上，所以我们队最后就没有参加，也是比较可惜的一点</li></ul><h1 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h1><h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p>要想做流程组的比赛，必须先下载安装SIEMENS PCS7(Process Control System)，这个软件安装起来比较复杂，B站上有全套安装视频<a href="https://space.bilibili.com/895398">https://space.bilibili.com/895398</a></p><p>当时就是在狂人小道的个人空间里看的所有安装过程，其实安装这个还是很麻烦的足够劝退了，不过一步步来的话一晚上差不多就安装好了。</p><p>环境我当时是使用win7装的PCS7（V8.2），如果不想装双系统，电脑性能又还可以的话可以用VMware装虚拟机。</p><p>PCS-V8.2的链接放在这里。链接：<a href="https://pan.baidu.com/s/1lnRsOtiGbDEo_gXfiCMxZg">https://pan.baidu.com/s/1lnRsOtiGbDEo_gXfiCMxZg</a> 提取码：zlg2</p><p>因为我不想给百度网盘交钱所以只能上传4个G大的文件，这就导致大于4G的安装文件无法正常上传，我直接一分为二，解压时候同时选中两个一起解压就行</p><p><img src="/2022/04/04/cimc-competition-experience/1.png"></p><p>就像这样就能正常得到了</p><p>VMware12的链接放在百度云链接: <a href="https://pan.baidu.com/s/1IjhPK9v7uvXV7BdEV1NTpw">https://pan.baidu.com/s/1IjhPK9v7uvXV7BdEV1NTpw</a> 提取码: dqha</p><h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul><li>虚拟机的网络设置，如果没有正确设置可能也无法连接设备，我当时是按照下面这样设置的<br><img src="/2022/04/04/cimc-competition-experience/2.png"></li><li>虚拟机的硬件设置最好也是设置好一点，不然那用起来卡得怀疑人生</li><li>同时，自己的笔电没有网口的童鞋也不要担心，网上随便买个USB转RJ-45网口转接器就行，注意就用这个转接器就行了，不要老是换转接器</li><li>我现在倒是觉得装个双系统比虚拟机要好些，不过装双系统稍微麻烦点吧<br>如果是南京工业大学的学弟学妹们可以私聊我邮箱（<a href="mailto:&#122;&#104;&#101;&#x6e;&#x67;&#x67;&#113;&#50;&#x30;&#x30;&#48;&#x40;&#x31;&#54;&#x33;&#46;&#99;&#111;&#x6d;">&#122;&#104;&#101;&#x6e;&#x67;&#x67;&#113;&#50;&#x30;&#x30;&#48;&#x40;&#x31;&#54;&#x33;&#46;&#99;&#111;&#x6d;</a>）或者找徐启老师让我发送全套已经装好软件的虚拟机以及其他资料</li></ul><h2 id="赛题资料"><a href="#赛题资料" class="headerlink" title="赛题资料"></a>赛题资料</h2><p>一般情况下赛题组会将所有的参赛资料发布在官网上<a href="http://www.siemenscup-cimc.org.cn/Project/PorjectResourceDetail?id=1">http://www.siemenscup-cimc.org.cn/Project/PorjectResourceDetail?id=1</a></p><h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><h2 id="初步使用PCS7"><a href="#初步使用PCS7" class="headerlink" title="初步使用PCS7"></a>初步使用PCS7</h2><p>一切准备就绪后，我们此时可以开始熟悉PCS软件了，我在下面链接中放了一个教学视频，着重看PCS7硬件组态以及CFC\SFC（continuous function chart&#x2F;Sequential Function Chart）的编写，这两个就是连续功能图、顺序功能图</p><p>简单地说，CFC连续功能图就是编写一个个程序、SFC顺序功能图就是一个流程图，可以一个个设置开启的条件并调用CFC里的程序（例如设置开启条件为罐子的液位达到其50%，执行的动作是开启放料阀门的程序启动）</p><p><img src="/2022/04/04/cimc-competition-experience/3.png"></p><p>链接: <a href="https://pan.baidu.com/s/18Z-hVzCyl3VAHbSWPc93tw">https://pan.baidu.com/s/18Z-hVzCyl3VAHbSWPc93tw</a> 提取码: vsv8</p><p>其他的介绍我就暂时不写了，可以多看看上面的视频，有些问题是能在官网论坛上找到的<a href="http://bbs.siemenscup-cimc.org.cn/forum.php?mod=viewthread&tid=331&extra=page=2&page=1">http://bbs.siemenscup-cimc.org.cn/forum.php?mod=viewthread&amp;tid=331&amp;extra=page%3D2&amp;page=1</a></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>竞赛</tag>
+      
+      <tag>西门子杯</tag>
+      
+      <tag>智能制造</tag>
       
     </tags>
     
